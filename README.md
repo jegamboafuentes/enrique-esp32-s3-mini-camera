@@ -225,7 +225,7 @@ The first thing that ever drew on this LCD, kept as an app. It stamps random-col
 ### App 6 — Sky
 
 <p align="center">
-  <img src="docs/images/sky.svg" alt="Photo placeholder: Sky app" width="280">
+  <img src="docs/images/sky.jpeg" alt="Photo placeholder: Sky app" width="280">
 </p>
 
 Overhead airline tracker for the airport you pin (default **BOS Logan**) and a home pin you set from the phone page.
@@ -243,7 +243,7 @@ Needs the home Wi-Fi saved from Webcam (2.4 GHz). BOOT returns Home and stops th
 ### App 7 — Flight
 
 <p align="center">
-  <img src="docs/images/flight.svg" alt="Photo placeholder: Flight app" width="280">
+  <img src="docs/images/flight.jpeg" alt="Photo placeholder: Flight app" width="280">
 </p>
 
 Track **one** callsign end to end — for example a transcon you care about — instead of whoever is nearest.
