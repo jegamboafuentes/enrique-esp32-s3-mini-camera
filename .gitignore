@@ -1,0 +1,25 @@
+.DS_Store
+**/.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arduino / esptool build leftovers
+build/
+.pio/
+*.elf
+*.map
+*.bin
+*.hex
+
+# Python helpers
+__pycache__/
+*.pyc
+.venv/
+
+# Local secrets (Wi-Fi is stored in NVS on device, not in this repo)
+.env
+.env.*
+secrets.h
+credentials.json

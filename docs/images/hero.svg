@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="640" viewBox="0 0 480 640">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c124e"/>
+      <stop offset="100%" stop-color="#622a94"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="640" rx="36" fill="url(#bg)"/>
+  <rect x="28" y="28" width="424" height="584" rx="28" fill="#0b1020" opacity="0.35"/>
+  <rect x="48" y="56" width="384" height="432" rx="18" fill="#10182c" stroke="#5eead4" stroke-width="2" stroke-dasharray="10 8"/>
+  <text x="240" y="230" text-anchor="middle" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="18" fill="#9db0d4">PHOTO PLACEHOLDER</text>
+  <text x="240" y="272" text-anchor="middle" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="28" font-weight="700" fill="#e8eefc">Enrique ESP32-S3</text>
+  <text x="240" y="312" text-anchor="middle" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="16" fill="#9db0d4">add a photo of the device</text>
+  <text x="240" y="360" text-anchor="middle" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="13" fill="#5eead4">replace with docs/images/hero.jpg</text>
+  <rect x="190" y="560" width="100" height="10" rx="5" fill="#c6c8d0"/>
+  <text x="240" y="530" text-anchor="middle" font-family="ui-sans-serif, Helvetica, Arial, sans-serif" font-size="14" fill="#e8eefc">Enrique Camera Project</text>
+</svg>
