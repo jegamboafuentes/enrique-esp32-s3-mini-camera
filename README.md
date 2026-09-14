@@ -121,10 +121,9 @@ BOOT returns Home without losing the saved wallpaper or Wi-Fi credentials.
 ### App 1 — Webcam
 
 <p align="center">
-  <img src="docs/images/webcam.svg" alt="Photo placeholder: webcam app" width="280">
+  <img src="docs/images/webcam.jpeg" alt="Photo placeholder: webcam app" width="280">
 </p>
 
-<p align="center"><em>📷 Placeholder — add <code>docs/images/webcam.jpg</code> (Webcam app / phone browser stream).</em></p>
 
 A wireless camera you open from a phone or laptop.
 
