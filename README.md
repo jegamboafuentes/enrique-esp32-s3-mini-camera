@@ -189,10 +189,8 @@ Preview is JPEG → `jpg2rgb565` (2× scale) → a 240-wide RGB565 blit. That pa
 ### App 4 — Gallery
 
 <p align="center">
-  <img src="docs/images/gallery.svg" alt="Photo placeholder: gallery app" width="280">
+  <img src="docs/images/gallery.jpeg" alt="Photo placeholder: gallery app" width="280">
 </p>
-
-<p align="center"><em>📷 Placeholder — add <code>docs/images/gallery.jpg</code> (Gallery list or playback).</em></p>
 
 A viewer for everything Shoot wrote.
 
