@@ -159,10 +159,8 @@ Quality is “party trick,” not production vision. It is still striking that t
 ### App 3 — Shoot
 
 <p align="center">
-  <img src="docs/images/shoot.svg" alt="Photo placeholder: shoot app" width="280">
+  <img src="docs/images/shoot.jpeg" alt="Photo placeholder: shoot app" width="280">
 </p>
-
-<p align="center"><em>📷 Placeholder — add <code>docs/images/shoot.jpg</code> (Shoot camera HUD).</em></p>
 
 The actual camera: live preview plus three capture modes.
 
