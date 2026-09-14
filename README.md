@@ -6,12 +6,16 @@ This firmware turns a [Waveshare ESP32-S3-Touch-LCD-2](https://www.waveshare.com
 
 One firmware. One home button. Several apps.
 
-<p align="center">
-  <img src="docs/images/hero.svg" alt="Photo placeholder: the Enrique ESP32-S3 device" width="360">
-</p>
-
-<p align="center"><em>📷 Placeholder — drop a photo of the board (screen on) at <code>docs/images/hero.jpg</code> and point this image at it.</em></p>
-
+<table align="center">
+  <tr>
+    <td>
+      <img src="docs/images/hero.jpeg" alt="Enrique ESP32-S3 device" width="360">
+    </td>
+    <td>
+      <img src="docs/images/hero2.jpeg" alt="Enrique ESP32-S3 device" width="360">
+    </td>
+  </tr>
+</table>
 ---
 
 ## What this project is about
