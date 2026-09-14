@@ -211,10 +211,9 @@ This is how the hyperlapse interval you picked in Shoot becomes a little movie o
 ### App 5 — Hello World
 
 <p align="center">
-  <img src="docs/images/hello.svg" alt="Photo placeholder: hello world app" width="280">
+  <img src="docs/images/hello.jpeg" alt="Photo placeholder: hello world app" width="280">
 </p>
 
-<p align="center"><em>📷 Placeholder — add <code>docs/images/hello.jpg</code> (Hello World).</em></p>
 
 The first thing that ever drew on this LCD, kept as an app. It stamps random-color **Hello World!** text so you can confirm the panel, backlight, and home button still work after a scary flash.
 
