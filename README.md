@@ -141,10 +141,9 @@ This is the “point it at the room and watch it from the couch” app.
 ### App 2 — Scan (AI)
 
 <p align="center">
-  <img src="docs/images/scan.svg" alt="Photo placeholder: scan app" width="280">
+  <img src="docs/images/scan.jpeg" alt="Photo placeholder: scan app" width="280">
 </p>
 
-<p align="center"><em>📷 Placeholder — add <code>docs/images/scan.jpg</code> (Scan / TinyML).</em></p>
 
 On-device object recognition with TensorFlow Lite Micro (ESP_TF), not a cloud API.
 
