@@ -322,14 +322,4 @@ docs/images/            photos + placeholders for this README
 
 ---
 
-## Adding your photos to this README
-
-Every section above already has an image slot. The SVGs are stand-ins so GitHub has something to render on day one.
-
-1. Shoot the device (home, folder, each app).
-2. Save the files under [`docs/images/`](docs/images/) using the names in [`docs/images/README.md`](docs/images/README.md).
-3. Change the matching `src="docs/images/….svg"` in this README to your `.jpg` / `.png`.
-
----
-
 Built as a weekend-scale experiment on a Waveshare ESP32-S3 touch LCD — a camera that boots into a home screen.
