@@ -103,7 +103,7 @@ Tap outside the card (or BOOT) to return Home. Only one app runs at a time; leav
 ### Settings
 
 <p align="center">
-  <img src="docs/images/settings.jpeg" alt="Photo placeholder: settings" width="280">
+  <img src="docs/images/settings2.jpeg" alt="Photo placeholder: settings" width="280">
 </p>
 
 Settings sits next to Apps on the home screen, not buried in the folder.
