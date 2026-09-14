@@ -68,10 +68,8 @@ The UI is built for a phone-sized 240×320 panel: big icons, short labels, and a
 ### Home screen
 
 <p align="center">
-  <img src="docs/images/home.svg" alt="Photo placeholder: home screen" width="280">
+  <img src="docs/images/home.jpeg" alt="Photo placeholder: home screen" width="280">
 </p>
-
-<p align="center"><em>📷 Placeholder — add <code>docs/images/home.jpg</code> (home launcher).</em></p>
 
 After boot you land on the home screen:
 
