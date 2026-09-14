@@ -1,9 +1,11 @@
 #include "apps.h"
 #include "board.h"
+#include "flight_server.h"
 
 #include <WiFi.h>
 #include <Preferences.h>
 #include <esp_wifi.h>
+#include <string.h>
 
 #define WALL_COUNT 6
 
@@ -89,14 +91,14 @@ static void drawSettings() {
   gfx->setCursor(14, 10);
   gfx->print("Settings");
 
-  gfx->fillRoundRect(12, 48, 216, 86, 16, 0xFFFF);
+  gfx->fillRoundRect(12, 42, 216, 78, 16, 0xFFFF);
   gfx->setTextSize(1);
   gfx->setTextColor(gfx->color565(80, 80, 90));
-  gfx->setCursor(24, 58);
+  gfx->setCursor(24, 50);
   gfx->print("HOME WI-FI");
   gfx->setTextColor(gfx->color565(20, 20, 24));
   gfx->setTextSize(2);
-  gfx->setCursor(24, 74);
+  gfx->setCursor(24, 66);
 
   Preferences prefs;
   prefs.begin("webcam", true);
@@ -105,13 +107,13 @@ static void drawSettings() {
   if (ssid.isEmpty()) {
     gfx->setTextSize(1);
     gfx->print("not saved yet");
-    gfx->setCursor(24, 96);
+    gfx->setCursor(24, 88);
     gfx->setTextColor(gfx->color565(80, 80, 90));
     gfx->print("Save it once in Webcam");
   } else {
     gfx->print(ssid.length() > 12 ? ssid.substring(0, 12) : ssid);
     gfx->setTextSize(1);
-    gfx->setCursor(24, 96);
+    gfx->setCursor(24, 88);
     if (WiFi.status() == WL_CONNECTED) {
       gfx->setTextColor(gfx->color565(30, 140, 70));
       gfx->printf("on  %s", WiFi.localIP().toString().c_str());
@@ -124,42 +126,53 @@ static void drawSettings() {
     }
   }
   bool connected = WiFi.status() == WL_CONNECTED;
-  gfx->fillRoundRect(24, 112, 88, 16, 8, connected ? gfx->color565(230, 80, 80) : gfx->color565(50, 180, 90));
+  gfx->fillRoundRect(24, 102, 88, 14, 8, connected ? gfx->color565(230, 80, 80) : gfx->color565(50, 180, 90));
   gfx->setTextColor(0xFFFF);
-  gfx->setCursor(connected ? 36 : 40, 115);
+  gfx->setCursor(connected ? 36 : 40, 104);
   gfx->print(connected ? "Disconnect" : "Connect");
 
-  gfx->fillRoundRect(12, 144, 216, 52, 16, 0xFFFF);
+  gfx->fillRoundRect(12, 128, 216, 46, 16, 0xFFFF);
   gfx->setTextColor(gfx->color565(80, 80, 90));
-  gfx->setCursor(24, 152);
+  gfx->setCursor(24, 136);
   gfx->print("SCREEN BRIGHTNESS");
   gfx->setTextColor(gfx->color565(20, 20, 24));
-  gfx->setCursor(24, 168);
+  gfx->setCursor(24, 152);
   gfx->printf("%d%%", brightness);
-  gfx->fillRoundRect(132, 156, 40, 28, 8, gfx->color565(230, 232, 236));
-  gfx->fillRoundRect(180, 156, 40, 28, 8, gfx->color565(230, 232, 236));
+  gfx->fillRoundRect(132, 140, 40, 26, 8, gfx->color565(230, 232, 236));
+  gfx->fillRoundRect(180, 140, 40, 26, 8, gfx->color565(230, 232, 236));
   gfx->setTextColor(gfx->color565(20, 20, 24));
   gfx->setTextSize(2);
-  gfx->setCursor(146, 162);
+  gfx->setCursor(146, 144);
   gfx->print("-");
-  gfx->setCursor(194, 162);
+  gfx->setCursor(194, 144);
   gfx->print("+");
   gfx->setTextSize(1);
-  gfx->setTextColor(gfx->color565(80, 80, 90));
-  gfx->setCursor(24, 182);
-  gfx->print("rear reds = PWR/CHG");
 
-  gfx->fillRoundRect(12, 206, 216, 78, 16, 0xFFFF);
+  gfx->fillRoundRect(12, 182, 216, 50, 16, 0xFFFF);
   gfx->setTextColor(gfx->color565(80, 80, 90));
-  gfx->setCursor(24, 216);
+  gfx->setCursor(24, 190);
+  gfx->print("SKY  ARRIVING / DEPARTING");
+  uint8_t filt = flightGetFilter();
+  const char *labs[3] = {"Both", "Arrive", "Leave"};
+  const uint8_t modes[3] = {FLIGHT_FILTER_BOTH, FLIGHT_FILTER_IN, FLIGHT_FILTER_OUT};
+  for (int i = 0; i < 3; i++) {
+    int x = 24 + i * 66;
+    bool on = filt == modes[i];
+    gfx->fillRoundRect(x, 204, 62, 20, 8, on ? gfx->color565(20, 20, 24) : gfx->color565(230, 232, 236));
+    gfx->setTextColor(on ? (uint16_t)0xFFFF : gfx->color565(20, 20, 24));
+    int lw = (int)strlen(labs[i]) * 6;
+    gfx->setCursor(x + (62 - lw) / 2, 209);
+    gfx->print(labs[i]);
+  }
+
+  gfx->fillRoundRect(12, 240, 216, 52, 16, 0xFFFF);
+  gfx->setTextColor(gfx->color565(80, 80, 90));
+  gfx->setCursor(24, 248);
   gfx->print("HOME BACKGROUND");
   for (int i = 0; i < WALL_COUNT; i++) {
     int x = 24 + i * 32;
-    fillWallPreview(x, 234, 26, 26, i);
-    gfx->drawRect(x, 234, 26, 26, i == wallpaper_id ? gfx->color565(20, 20, 24) : gfx->color565(200, 200, 206));
-    if (i == wallpaper_id) {
-      gfx->drawRect(x + 1, 235, 24, 24, gfx->color565(20, 20, 24));
-    }
+    fillWallPreview(x, 262, 26, 22, i);
+    gfx->drawRect(x, 262, 26, 22, i == wallpaper_id ? gfx->color565(20, 20, 24) : gfx->color565(200, 200, 206));
   }
 
   gfx->setTextColor(gfx->color565(80, 80, 90));
@@ -171,6 +184,7 @@ static void drawSettings() {
 void settingsEnter() {
   wifi_busy = false;
   dirty = true;
+  flightLoadPrefs();
   settingsApplyBrightness();
   drawSettings();
 }
@@ -213,19 +227,26 @@ void settingsLoop(bool tapped, uint16_t tx, uint16_t ty) {
   }
 
   if (tapped) {
-    if (inRect(tx, ty, 24, 108, 88, 24)) {
+    if (inRect(tx, ty, 24, 98, 88, 24)) {
       if (WiFi.status() == WL_CONNECTED) stopHomeWifi();
       else startHomeWifi();
       dirty = true;
-    } else if (inRect(tx, ty, 132, 152, 40, 36)) {
+    } else if (inRect(tx, ty, 132, 136, 40, 36)) {
       brightness -= 20;
       saveBrightness();
       dirty = true;
-    } else if (inRect(tx, ty, 180, 152, 40, 36)) {
+    } else if (inRect(tx, ty, 180, 136, 40, 36)) {
       brightness += 20;
       saveBrightness();
       dirty = true;
-    } else if (inRect(tx, ty, 24, 230, 192, 34)) {
+    } else if (inRect(tx, ty, 24, 200, 198, 28)) {
+      int id = (tx - 24) / 66;
+      uint8_t modes[3] = {FLIGHT_FILTER_BOTH, FLIGHT_FILTER_IN, FLIGHT_FILTER_OUT};
+      if (id >= 0 && id < 3) {
+        flightSetFilter(modes[id]);
+        dirty = true;
+      }
+    } else if (inRect(tx, ty, 24, 258, 192, 30)) {
       int id = (tx - 24) / 32;
       if (id >= 0 && id < WALL_COUNT) {
         settingsSetWallpaper(id);

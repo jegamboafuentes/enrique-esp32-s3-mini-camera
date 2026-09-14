@@ -15,5 +15,7 @@ Suggested names (JPG or PNG is fine):
 | `shoot.jpg` | Shoot camera |
 | `gallery.jpg` | Gallery |
 | `hello.jpg` | Hello World |
+| `sky.svg` / `sky.jpeg` | Sky overhead tracker (In / Out / Both) |
+| `flight.svg` / `flight.jpeg` | Flight one-callsign tracker |
 
-Until those files exist, the README uses the SVG placeholders in this folder.
+Until photos exist, the README uses the SVG placeholders in this folder. Drop `sky.jpeg` and `flight.jpeg` here, then point the main README at those files.

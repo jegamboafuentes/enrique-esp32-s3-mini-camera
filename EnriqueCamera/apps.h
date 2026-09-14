@@ -29,3 +29,11 @@ void shootLeave();
 void galleryEnter();
 void galleryLoop(bool tapped, uint16_t tx, uint16_t ty);
 void galleryLeave();
+
+void flightsEnter();
+void flightsLoop(bool tapped, uint16_t tx, uint16_t ty);
+void flightsLeave();
+
+void trackEnter();
+void trackLoop(bool tapped, uint16_t tx, uint16_t ty);
+void trackLeave();

@@ -2,7 +2,7 @@
 
 A quick experiment that asks: **what can you actually do with a tiny ESP32 that already has a camera, a touchscreen, and a home button?**
 
-This firmware turns a [Waveshare ESP32-S3-Touch-LCD-2](https://www.waveshare.com/wiki/ESP32-S3-Touch-LCD-2) into a pocket **mini iPhone-style device**. It boots into a launcher, not a single sketch. From there you open apps, change settings, take pictures, record video, run a wireless webcam, and even try on-device object labels.
+This firmware turns a [Waveshare ESP32-S3-Touch-LCD-2](https://www.waveshare.com/wiki/ESP32-S3-Touch-LCD-2) into a pocket **mini iPhone-style device**. It boots into a launcher, not a single sketch. From there you open apps, change settings, take pictures, record video, run a wireless webcam, try on-device object labels, and watch live air traffic over your house.
 
 One firmware. One home button. Several apps.
 
@@ -56,7 +56,9 @@ The running firmware lives in [`EnriqueCamera/`](EnriqueCamera/). That is the pr
 - **Shoot** — photos, Motion-JPEG video, hyperlapse with a chosen interval
 - **Gallery** — browse `/DCIM`, preview stills, play videos, play hyperlapse folders as video
 - **Hello World** — tiny GFX smoke test
-- **Settings** — reconnect saved home Wi-Fi, screen brightness, wallpaper picker
+- **Sky** — live airline arrivals and departures for a pinned airport, with In / Out / Both
+- **Flight** — follow one callsign and time it to your pin and the airport
+- **Settings** — reconnect saved home Wi-Fi, screen brightness, Sky In/Out filter, wallpaper picker
 - **Storage** — SD card first (`/DCIM`), onboard flash if no card is present
 
 ---
@@ -88,7 +90,7 @@ Tap **Apps** to open the folder. Tap **Settings** to configure the device. Press
   <img src="docs/images/apps.jpeg" alt="Photo placeholder: apps folder" width="280">
 </p>
 
-The folder is a 2″ springboard:
+The folder is a 2″ springboard in three rows:
 
 | Icon | App | What it does |
 | --- | --- | --- |
@@ -96,9 +98,11 @@ The folder is a 2″ springboard:
 | AI | **Scan** | TinyML object labels on the live camera |
 | Rec | **Shoot** | Photo, video, and hyperlapse to memory |
 | Pic | **Gallery** | Preview photos and play clips / hyperlapses |
+| Sky | **Sky** | Airline traffic in and out of your airport pin |
 | Hi | **Hello** | Hello World drawing test |
+| Radar | **Flight** | One callsign: time over you and to the airport |
 
-Tap outside the card (or BOOT) to return Home. Only one app runs at a time; leaving an app de-inits the camera so the next one can grab it in the right pixel format.
+Tap outside the card (or BOOT) to return Home. Only one app runs at a time; leaving an app de-inits the camera so the next one can grab it in the right pixel format. Webcam, Sky, and Flight all want port 80 — open one at a time.
 
 ### Settings
 
@@ -108,8 +112,9 @@ Tap outside the card (or BOOT) to return Home. Only one app runs at a time; leav
 
 Settings sits next to Apps on the home screen, not buried in the folder.
 
-- **Home Wi-Fi** — connect / disconnect using the SSID + password saved from the Webcam page (NVS namespace `webcam`). The LCD shows the SSID and, when joined, the STA IP.
+- **Home Wi-Fi** — connect / disconnect using the SSID + password saved from the Webcam page (NVS namespace `webcam`). The LCD shows the SSID and, when joined, the STA IP. Sky and Flight reuse that same saved network.
 - **Screen brightness** — PWM on the LCD backlight (GPIO 1), 20–100%, remembered in NVS. The two red lights on the back are **power** and **charge** indicators tied to the ETA6098 charger. They are not on a GPIO, so firmware cannot turn them off.
+- **Sky arriving / departing** — Both, Arrive, or Leave. Same filter as the In / Out / Both chips inside the Sky app (NVS namespace `flight`).
 - **Wallpaper** — six gradient themes (purple, ocean, sunset, forest, graphite, pink). Choice is stored in NVS namespace `ecp`.
 
 BOOT returns Home without losing the saved wallpaper or Wi-Fi credentials.
@@ -217,6 +222,41 @@ This is how the hyperlapse interval you picked in Shoot becomes a little movie o
 
 The first thing that ever drew on this LCD, kept as an app. It stamps random-color **Hello World!** text so you can confirm the panel, backlight, and home button still work after a scary flash.
 
+### App 6 — Sky
+
+<p align="center">
+  <img src="docs/images/sky.svg" alt="Photo placeholder: Sky app" width="280">
+</p>
+
+Overhead airline tracker for the airport you pin (default **BOS Logan**) and the house pin (default **394 Ocean Ave, Revere MA**).
+
+- Live positions from **adsb.fi**, with **adsb.lol** as backup
+- Routes from **adsbdb.com** so the screen can say arriving *from* a city or departing *to* a city
+- **In / Out / Both** chips on the LCD (and the same filter in Settings). In and Out are different lists, not the same plane relabeled
+- **Both** stacks the best arrival and the best departure
+- Pass-you timer uses your home pin; landing timer uses distance to the airport
+- Phone config SoftAP **`ESP32-Flights`**, page at **`http://192.168.4.1`** or **`http://esp32-flights.local`** — drop a Leaflet pin or paste a Google Maps link for home and airport
+- Only scheduled-looking airline callsigns (not N-numbers or typical bizjets). Overflights that are not in/out of your airport are ignored
+
+Needs the home Wi-Fi saved from Webcam (2.4 GHz). BOOT returns Home and stops the flight HTTP server.
+
+### App 7 — Flight
+
+<p align="center">
+  <img src="docs/images/flight.svg" alt="Photo placeholder: Flight app" width="280">
+</p>
+
+Track **one** callsign end to end — for example a transcon you care about — instead of whoever is nearest.
+
+- Type the flight on the phone page (SoftAP **`ESP32-Track`**, **`http://192.168.4.1`** or **`http://esp32-track.local`**)
+- Reuses the Sky home pin and airport pin
+- LCD shows airline, origin → destination, **OVER YOU**, and **TO AIRPORT**
+- Live position: adsb.fi / adsb.lol callsign, then OpenSky by hex or a small map box along the route
+- If ADS-B has the route but no position yet (ocean / coverage gap), the clocks show **no ADS-B** instead of a fake ETA
+- Callsign is stored in NVS namespace `track`
+
+Same port-80 rule as Webcam and Sky: only one of those apps at a time.
+
 ---
 
 ## Storage and memory
@@ -266,6 +306,7 @@ Libraries used by the unified firmware:
 - `esp_camera` / `img_converters` (ESP32 core)
 - SD, FFat, Preferences, WiFi, ESPmDNS, HTTP server
 - ESP_TF / TensorFlow Lite Micro (Scan app)
+- HTTPClient, WiFiClientSecure, ArduinoJson (Sky + Flight ADS-B)
 
 Serial is 115200. On a good boot you should see `Enrique Camera Project` and `Find CST816!`.
 
@@ -297,7 +338,11 @@ EnriqueCamera/          ← the mini-phone firmware (flash this)
   app_shoot.cpp         photo / video / hyperlapse
   app_gallery.cpp       preview + playback
   app_hello.cpp         Hello World
-  app_settings.cpp      Wi-Fi, LEDs, wallpapers
+  app_settings.cpp      Wi-Fi, Sky filter, wallpapers
+  app_flights.cpp       Sky overhead tracker
+  app_track.cpp         Flight one-callsign tracker
+  flight_server.cpp     Sky phone map / pins
+  track_server.cpp      Flight callsign page
   camera_hw.cpp         JPEG vs RGB565 camera bring-up
   storage.cpp           SD then FFat
   stream_server.cpp     HTTP UI + /stream
@@ -319,6 +364,8 @@ docs/images/            photos + placeholders for this README
 - Onboard flash is a safety net, not a film roll. Use a microSD card for real shoots.
 - SoftAP is open (no password) so a phone can join without typing on a 2″ screen. Treat it as a bench network.
 - Wi-Fi is **2.4 GHz only**. A 5 GHz-only home SSID will not join.
+- Sky and Flight use public ADS-B aggregators (no FlightRadar24 key). Coverage has gaps, especially over water, and a “departed” status on a phone app does not always mean a live position.
+- Sky In / Out is only as good as the route database plus climb/descent. Random overflights are hidden on purpose.
 
 ---
 

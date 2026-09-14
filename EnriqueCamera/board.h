@@ -34,6 +34,8 @@
 #define LCD_W 240
 #define LCD_H 320
 
+enum AppGlyph { GLYPH_WEBCAM, GLYPH_SCAN, GLYPH_SHOOT, GLYPH_GALLERY, GLYPH_HELLO, GLYPH_FLIGHT, GLYPH_TRACK };
+
 extern Arduino_GFX *gfx;
 
 void cameraStop();
