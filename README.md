@@ -85,10 +85,8 @@ Tap **Apps** to open the folder. Tap **Settings** to configure the device. Press
 ### Apps folder
 
 <p align="center">
-  <img src="docs/images/apps.svg" alt="Photo placeholder: apps folder" width="280">
+  <img src="docs/images/apps.jpeg" alt="Photo placeholder: apps folder" width="280">
 </p>
-
-<p align="center"><em>📷 Placeholder — add <code>docs/images/apps.jpg</code> (Apps folder).</em></p>
 
 The folder is a 2″ springboard:
 
