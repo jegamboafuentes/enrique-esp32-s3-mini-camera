@@ -100,6 +100,7 @@ static void drawFolderIcon(int x, int y) {
 }
 
 static void drawHome() {
+  settingsApplyBrightness();
   gfx->setTextWrap(false);
   drawWallpaper();
   drawStatusBar();
@@ -223,6 +224,7 @@ void setup() {
   }
   pinMode(PIN_LCD_BL, OUTPUT);
   digitalWrite(PIN_LCD_BL, HIGH);
+  settingsApplyBrightness();
   gfx->setTextWrap(false);
 
   Wire.begin(PIN_TP_SDA, PIN_TP_SCL, 400000);

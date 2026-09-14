@@ -29,8 +29,6 @@
 #define PIN_BOOT 0
 #define PIN_TP_SDA 48
 #define PIN_TP_SCL 47
-#define PIN_LED1 18
-#define PIN_LED2 18
 #define PIN_SD_CS 41
 
 #define LCD_W 240

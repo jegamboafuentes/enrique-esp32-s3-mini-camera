@@ -18,7 +18,7 @@ void settingsEnter();
 void settingsLoop(bool tapped, uint16_t tx, uint16_t ty);
 void settingsLeave();
 void settingsLoad();
-void settingsApplyLeds();
+void settingsApplyBrightness();
 int settingsWallpaper();
 void settingsSetWallpaper(int id);
 

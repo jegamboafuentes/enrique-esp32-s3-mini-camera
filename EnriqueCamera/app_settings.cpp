@@ -21,7 +21,7 @@ static const Wall kWalls[WALL_COUNT] = {
 };
 
 static int wallpaper_id = 0;
-static bool leds_on = false;
+static int brightness = 100;
 static bool wifi_busy = false;
 static uint32_t wifi_try_at = 0;
 static bool dirty = true;
@@ -40,29 +40,31 @@ void settingsSetWallpaper(int id) {
   prefs.end();
 }
 
-void settingsApplyLeds() {
-  pinMode(PIN_LED1, OUTPUT);
-  pinMode(PIN_LED2, OUTPUT);
-  digitalWrite(PIN_LED1, leds_on ? HIGH : LOW);
-  digitalWrite(PIN_LED2, leds_on ? HIGH : LOW);
+void settingsApplyBrightness() {
+  if (brightness < 20) brightness = 20;
+  if (brightness > 100) brightness = 100;
+  uint32_t duty = (255UL * (uint32_t)brightness) / 100;
+  ledcDetach(PIN_LCD_BL);
+  ledcAttachChannel(PIN_LCD_BL, 5000, 8, 2);
+  ledcWrite(PIN_LCD_BL, duty);
 }
 
-static void saveLeds() {
+static void saveBrightness() {
   Preferences prefs;
   prefs.begin("ecp", false);
-  prefs.putBool("leds", leds_on);
+  prefs.putUChar("bl", (uint8_t)brightness);
   prefs.end();
-  settingsApplyLeds();
+  settingsApplyBrightness();
 }
 
 void settingsLoad() {
   Preferences prefs;
   prefs.begin("ecp", true);
   wallpaper_id = prefs.getUChar("wall", 0);
-  leds_on = prefs.getBool("leds", false);
+  brightness = prefs.getUChar("bl", 100);
   prefs.end();
   if (wallpaper_id < 0 || wallpaper_id >= WALL_COUNT) wallpaper_id = 0;
-  settingsApplyLeds();
+  if (brightness < 20 || brightness > 100) brightness = 100;
 }
 
 static void fillWallPreview(int x, int y, int w, int h, int id) {
@@ -73,11 +75,6 @@ static void fillWallPreview(int x, int y, int w, int h, int id) {
     uint8_t b = c.b0 + (int)(c.b1 - c.b0) * i / h;
     gfx->drawFastHLine(x, y + i, w, gfx->color565(r, g, b));
   }
-}
-
-static void drawToggle(int x, int y, bool on) {
-  gfx->fillRoundRect(x, y, 52, 28, 14, on ? gfx->color565(50, 200, 90) : gfx->color565(180, 184, 192));
-  gfx->fillCircle(on ? x + 38 : x + 14, y + 14, 11, 0xFFFF);
 }
 
 static bool inRect(int x, int y, int rx, int ry, int rw, int rh) {
@@ -134,12 +131,23 @@ static void drawSettings() {
 
   gfx->fillRoundRect(12, 144, 216, 52, 16, 0xFFFF);
   gfx->setTextColor(gfx->color565(80, 80, 90));
-  gfx->setCursor(24, 154);
-  gfx->print("REAR LEDS");
+  gfx->setCursor(24, 152);
+  gfx->print("SCREEN BRIGHTNESS");
   gfx->setTextColor(gfx->color565(20, 20, 24));
-  gfx->setCursor(24, 170);
-  gfx->print(leds_on ? "On" : "Off");
-  drawToggle(164, 156, leds_on);
+  gfx->setCursor(24, 168);
+  gfx->printf("%d%%", brightness);
+  gfx->fillRoundRect(132, 156, 40, 28, 8, gfx->color565(230, 232, 236));
+  gfx->fillRoundRect(180, 156, 40, 28, 8, gfx->color565(230, 232, 236));
+  gfx->setTextColor(gfx->color565(20, 20, 24));
+  gfx->setTextSize(2);
+  gfx->setCursor(146, 162);
+  gfx->print("-");
+  gfx->setCursor(194, 162);
+  gfx->print("+");
+  gfx->setTextSize(1);
+  gfx->setTextColor(gfx->color565(80, 80, 90));
+  gfx->setCursor(24, 182);
+  gfx->print("rear reds = PWR/CHG");
 
   gfx->fillRoundRect(12, 206, 216, 78, 16, 0xFFFF);
   gfx->setTextColor(gfx->color565(80, 80, 90));
@@ -163,6 +171,7 @@ static void drawSettings() {
 void settingsEnter() {
   wifi_busy = false;
   dirty = true;
+  settingsApplyBrightness();
   drawSettings();
 }
 
@@ -208,9 +217,13 @@ void settingsLoop(bool tapped, uint16_t tx, uint16_t ty) {
       if (WiFi.status() == WL_CONNECTED) stopHomeWifi();
       else startHomeWifi();
       dirty = true;
-    } else if (inRect(tx, ty, 150, 144, 78, 52)) {
-      leds_on = !leds_on;
-      saveLeds();
+    } else if (inRect(tx, ty, 132, 152, 40, 36)) {
+      brightness -= 20;
+      saveBrightness();
+      dirty = true;
+    } else if (inRect(tx, ty, 180, 152, 40, 36)) {
+      brightness += 20;
+      saveBrightness();
       dirty = true;
     } else if (inRect(tx, ty, 24, 230, 192, 34)) {
       int id = (tx - 24) / 32;

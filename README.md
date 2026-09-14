@@ -52,7 +52,7 @@ The running firmware lives in [`EnriqueCamera/`](EnriqueCamera/). That is the pr
 - **Shoot** — photos, Motion-JPEG video, hyperlapse with a chosen interval
 - **Gallery** — browse `/DCIM`, preview stills, play videos, play hyperlapse folders as video
 - **Hello World** — tiny GFX smoke test
-- **Settings** — reconnect saved home Wi-Fi, LED toggle, wallpaper picker
+- **Settings** — reconnect saved home Wi-Fi, screen brightness, wallpaper picker
 - **Storage** — SD card first (`/DCIM`), onboard flash if no card is present
 
 ---
@@ -111,7 +111,7 @@ Tap outside the card (or BOOT) to return Home. Only one app runs at a time; leav
 Settings sits next to Apps on the home screen, not buried in the folder.
 
 - **Home Wi-Fi** — connect / disconnect using the SSID + password saved from the Webcam page (NVS namespace `webcam`). The LCD shows the SSID and, when joined, the STA IP.
-- **Rear LEDs** — software toggle on **GPIO 18**. The two red 0402s on the back of this board are likely power/charge indicators, so they may not follow this switch.
+- **Screen brightness** — PWM on the LCD backlight (GPIO 1), 20–100%, remembered in NVS. The two red lights on the back are **power** and **charge** indicators tied to the ETA6098 charger. They are not on a GPIO, so firmware cannot turn them off.
 - **Wallpaper** — six gradient themes (purple, ocean, sunset, forest, graphite, pink). Choice is stored in NVS namespace `ecp`.
 
 BOOT returns Home without losing the saved wallpaper or Wi-Fi credentials.
