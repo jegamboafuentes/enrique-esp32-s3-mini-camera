@@ -228,7 +228,7 @@ The first thing that ever drew on this LCD, kept as an app. It stamps random-col
   <img src="docs/images/sky.svg" alt="Photo placeholder: Sky app" width="280">
 </p>
 
-Overhead airline tracker for the airport you pin (default **BOS Logan**) and the house pin (default **394 Ocean Ave, Revere MA**).
+Overhead airline tracker for the airport you pin (default **BOS Logan**) and a home pin you set from the phone page.
 
 - Live positions from **adsb.fi**, with **adsb.lol** as backup
 - Routes from **adsbdb.com** so the screen can say arriving *from* a city or departing *to* a city
